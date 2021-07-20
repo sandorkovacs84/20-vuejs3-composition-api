@@ -5,10 +5,13 @@
         <counter-component></counter-component>
 
         <input type="number" v-model="a">
+        <input type="text" v-model="s">
+
+        <!-- {{ searchQuery }} -->
 
         <!-- {{ users }} -->
         <ul>
-            <li v-for="user in users" :key="user.id">
+            <li v-for="user in searchQuery" :key="user.id">
                 {{ user.name }}
             </li>
         </ul>
@@ -19,7 +22,7 @@
 
 import axios from 'axios'
 // import { fetchUsers } from '@/api/UserRepositories'
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 
 import CounterComponent from '@/components/CounterComponent';
 
@@ -39,11 +42,21 @@ export default {
             users.value = res.data 
         }
 
+        const s = ref('em');
+        const searchQuery = computed(() => {
+            return users.value.filter(
+                repository => repository.name.includes(s.value)
+            )
+        });
+        
+
         onMounted(getUserRepositories);
 
         watch(a, getUserRepositories);
 
         return {
+            s,
+            searchQuery,
             a,
             users,
             getUserRepositories
