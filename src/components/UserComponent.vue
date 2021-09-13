@@ -1,8 +1,7 @@
 <template>
-    <div>
         <h1>User Component</h1>
 
-        <counter-component></counter-component>
+        <!-- <counter-component></counter-component> -->
 
         <input type="number" v-model="a">
         <input type="text" v-model="s">
@@ -15,32 +14,37 @@
                 {{ user.name }}
             </li>
         </ul>
-    </div>
 </template>
 
 <script>
 
-import axios from 'axios'
-// import { fetchUsers } from '@/api/UserRepositories'
+// import axios from 'axios'
+import { UserRepository } from '@/api/UserRepositories'
 import { ref, onMounted, watch, computed } from 'vue'
 
-import CounterComponent from '@/components/CounterComponent';
+// import CounterComponent from '@/components/CounterComponent';
 
 export default {
     components: {
-        CounterComponent,
+        // CounterComponent,
     },
 
     setup() {
         const a = ref(1);
 
         const users = ref([]); 
-
+   
         const getUserRepositories = async () => {
-            let res = await axios.get('https://jsonplaceholder.typicode.com/users') ;
-            // let res = await fetchUsers();
+            // let res = fetchUsers() ;
+            let res = await UserRepository.fetchUsers();
+            console.log(res);
             users.value = res.data 
         }
+        // const getUserRepositories = async () => {
+        //     let res = await axios.get('https://jsonplaceholder.typicode.com/users') ;
+        //     // let res = await fetchUsers();
+        //     users.value = res.data 
+        // }
 
         const s = ref('em');
         const searchQuery = computed(() => {

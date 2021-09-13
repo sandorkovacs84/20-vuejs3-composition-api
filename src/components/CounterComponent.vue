@@ -4,7 +4,7 @@
         <button @click="up()">+</button>
         <button @click="down()">-</button>
 
-        <p>Users count: {{ users}}</p>
+        <p>Users count: {{ users.length}}</p>
     </div>
 </template>
 
@@ -25,9 +25,7 @@ export default {
         let users = ref([]);
 
         const getUsers = async () => {
-            await axios.get('https://jsonplaceholder.typicode.com/users').then(() => {
-               users=['dsadas']
-            });
+            users.value = (await axios.get('https://jsonplaceholder.typicode.com/users')).data;
         }
 
         watch(users, getUsers)
