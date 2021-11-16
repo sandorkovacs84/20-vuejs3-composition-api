@@ -11,11 +11,9 @@
 
         <input type="text" v-model="s">
 
-        <!-- {{ searchQuery }} -->
-
-        <!-- {{ users }} -->
+        <!-- {{ users -> searchQuery }} -->
         <ul>
-            <li v-for="post in searchQuery" :key="post.id">
+            <li v-for="post in posts" :key="post.id">
                 {{ post.title }} - 
                 <button @click="deletePost(post.id)">[delete]</button>
             </li>
@@ -24,8 +22,6 @@
 
 <script>
 
-// import axios from 'axios'
-// import { PostRepository } from '@/api/PostRepositories'
 import { ref } from 'vue'
 import usePostRepositories from '@/composables/usePostRepositories'
 import useSearchRepositories from '@/composables/useSearchRepositories'
@@ -52,11 +48,8 @@ export default {
             addPost,
             deletePost,
             s,
-            searchQuery,
-            // a,
-            posts,
+            posts: searchQuery,
             post,
-            // getPostRepositories
         }
     },
 
