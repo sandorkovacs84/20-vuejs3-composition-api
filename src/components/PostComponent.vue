@@ -3,14 +3,12 @@
 
 
         <h3 class="text-lg">Post</h3>
+
         <input v-model="post.title">
         <textarea v-model="post.body"></textarea>
         <button @click="addPost">Add Post</button>
         <hr>
 
-        <counter-component></counter-component>
-
-        <input type="number" v-model="a">
         <input type="text" v-model="s">
 
         <!-- {{ searchQuery }} -->
@@ -27,69 +25,38 @@
 <script>
 
 // import axios from 'axios'
-import { PostRepository } from '@/api/PostRepositories'
-import { ref, onMounted, watch, computed } from 'vue'
-
-// import CounterComponent from '@/components/CounterComponent';
+// import { PostRepository } from '@/api/PostRepositories'
+import { ref } from 'vue'
+import usePostRepositories from '@/composables/usePostRepositories'
+import useSearchRepositories from '@/composables/useSearchRepositories'
 
 export default {
     components: {
-        // CounterComponent,
     },
 
     setup() {
-        const a = ref(1);
         const post = ref({});
+        // posts repositories 
+        const { 
+            posts,
+            addPost,
+            deletePost
+        } = usePostRepositories(post)
 
-
-        const posts = ref([]); 
-   
-        const getPostRepositories = async () => {
-            // let res = fetchUsers() ;
-            let res = await PostRepository.fetchAll();
-            console.log(res);
-            posts.value = res.data 
-        }
-
-        const addPost = async () => {
-            let res = await PostRepository.add(post.value)
-            console.log(res);
-            posts.value.push(res.data)
-        }
-
-        const deletePost = async (id) => {
-            let res = await PostRepository.delete(id)
-            console.log(res)
-            // posts.value.splice(id, 1)
-            posts.value = posts.value.filter(post => post.id != id)
-        }
-        // const getUserRepositories = async () => {
-        //     let res = await axios.get('https://jsonplaceholder.typicode.com/users') ;
-        //     // let res = await fetchUsers();
-        //     users.value = res.data 
-        // }
-
-        const s = ref('');
-        const searchQuery = computed(() => {
-            return posts.value.filter(
-                repository => repository.title.includes(s.value)
-            )
-        });
-        
-
-        onMounted(getPostRepositories);
-
-        watch(a, getPostRepositories);
+        const {
+            s,
+            searchQuery
+        } = useSearchRepositories(posts)
 
         return {
             addPost,
             deletePost,
             s,
             searchQuery,
-            a,
+            // a,
             posts,
             post,
-            getPostRepositories
+            // getPostRepositories
         }
     },
 
