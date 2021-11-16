@@ -18,7 +18,8 @@
         <!-- {{ users }} -->
         <ul>
             <li v-for="post in searchQuery" :key="post.id">
-                {{ post.title }}
+                {{ post.title }} - 
+                <button @click="deletePost(post.id)">[delete]</button>
             </li>
         </ul>
 </template>
@@ -55,6 +56,13 @@ export default {
             console.log(res);
             posts.value.push(res.data)
         }
+
+        const deletePost = async (id) => {
+            let res = await PostRepository.delete(id)
+            console.log(res)
+            // posts.value.splice(id, 1)
+            posts.value = posts.value.filter(post => post.id != id)
+        }
         // const getUserRepositories = async () => {
         //     let res = await axios.get('https://jsonplaceholder.typicode.com/users') ;
         //     // let res = await fetchUsers();
@@ -75,6 +83,7 @@ export default {
 
         return {
             addPost,
+            deletePost,
             s,
             searchQuery,
             a,
