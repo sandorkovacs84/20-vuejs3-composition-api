@@ -2,17 +2,17 @@
     <div>
         <h1 class="font-bold">Main Component</h1>
 
-        <user-component></user-component>
+        <post-component></post-component>
     </div>
 </template>
 
 <script>
 
-import UserComponent from './UserComponent'
+import PostComponent from './PostComponent'
 
 export default {
     components: {
-        UserComponent
+        PostComponent
     },
     
     setup() {

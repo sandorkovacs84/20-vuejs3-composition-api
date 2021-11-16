@@ -10,8 +10,8 @@
 
         <!-- {{ users }} -->
         <ul>
-            <li v-for="user in searchQuery" :key="user.id">
-                {{ user.name }}
+            <li v-for="post in searchQuery" :key="post.id">
+                {{ post.title }}
             </li>
         </ul>
 </template>
@@ -19,7 +19,7 @@
 <script>
 
 // import axios from 'axios'
-import { UserRepository } from '@/api/UserRepositories'
+import { PostRepository } from '@/api/PostRepositories'
 import { ref, onMounted, watch, computed } from 'vue'
 
 // import CounterComponent from '@/components/CounterComponent';
@@ -32,13 +32,13 @@ export default {
     setup() {
         const a = ref(1);
 
-        const users = ref([]); 
+        const posts = ref([]); 
    
-        const getUserRepositories = async () => {
+        const getPostRepositories = async () => {
             // let res = fetchUsers() ;
-            let res = await UserRepository.fetchUsers();
+            let res = await PostRepository.fetchAll();
             console.log(res);
-            users.value = res.data 
+            posts.value = res.data 
         }
         // const getUserRepositories = async () => {
         //     let res = await axios.get('https://jsonplaceholder.typicode.com/users') ;
@@ -48,22 +48,22 @@ export default {
 
         const s = ref('em');
         const searchQuery = computed(() => {
-            return users.value.filter(
-                repository => repository.name.includes(s.value)
+            return posts.value.filter(
+                repository => repository.title.includes(s.value)
             )
         });
         
 
-        onMounted(getUserRepositories);
+        onMounted(getPostRepositories);
 
-        watch(a, getUserRepositories);
+        watch(a, getPostRepositories);
 
         return {
             s,
             searchQuery,
             a,
-            users,
-            getUserRepositories
+            posts,
+            getPostRepositories
         }
     },
 
