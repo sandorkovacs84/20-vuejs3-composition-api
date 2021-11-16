@@ -1,7 +1,14 @@
 <template>
         <h1>User Component</h1>
 
-        <!-- <counter-component></counter-component> -->
+
+        <h3 class="text-lg">Post</h3>
+        <input v-model="post.title">
+        <textarea v-model="post.body"></textarea>
+        <button @click="addPost">Add Post</button>
+        <hr>
+
+        <counter-component></counter-component>
 
         <input type="number" v-model="a">
         <input type="text" v-model="s">
@@ -31,6 +38,8 @@ export default {
 
     setup() {
         const a = ref(1);
+        const post = ref({});
+
 
         const posts = ref([]); 
    
@@ -40,13 +49,19 @@ export default {
             console.log(res);
             posts.value = res.data 
         }
+
+        const addPost = async () => {
+            let res = await PostRepository.add(post.value)
+            console.log(res);
+            posts.value.push(res.data)
+        }
         // const getUserRepositories = async () => {
         //     let res = await axios.get('https://jsonplaceholder.typicode.com/users') ;
         //     // let res = await fetchUsers();
         //     users.value = res.data 
         // }
 
-        const s = ref('em');
+        const s = ref('');
         const searchQuery = computed(() => {
             return posts.value.filter(
                 repository => repository.title.includes(s.value)
@@ -59,10 +74,12 @@ export default {
         watch(a, getPostRepositories);
 
         return {
+            addPost,
             s,
             searchQuery,
             a,
             posts,
+            post,
             getPostRepositories
         }
     },
