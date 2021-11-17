@@ -1,7 +1,6 @@
 <template>
         <h1>User Component</h1>
 
-
         <h3 class="text-lg">Post</h3>
 
         <input v-model="post.title">
@@ -32,6 +31,7 @@ export default {
 
     setup() {
         const post = ref({});
+        
         // posts repositories 
         const { 
             posts,
